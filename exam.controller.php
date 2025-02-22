@@ -39,7 +39,9 @@ class examController extends exam
 			if($this->module_info->exam_pass_group_option>1)
 			{
 				$default_group_list = explode(",", $this->module_info->exam_pass_group_list);
-				if(!count($default_group_list)) unset($args->exam_pass_group_list);
+				if(empty($default_group_list) || !is_array($default_group_list)) {
+				    unset($args->exam_pass_group_list);
+				}
 				for($i=0;$i<count($args->exam_pass_group_list);$i++)
 				{
 					if(!in_array($args->exam_pass_group_list[$i],$default_group_list)) continue;
@@ -47,7 +49,9 @@ class examController extends exam
 				}
 			} else {
 				$default_group_list = $logged_info->group_list;
-				if(!count($default_group_list)) unset($args->exam_pass_group_list);
+				if(empty($default_group_list) || !is_array($default_group_list)) {
+				    unset($args->exam_pass_group_list);
+				}
 				for($i=0;$i<count($args->exam_pass_group_list);$i++)
 				{
 					if(!array_key_exists($args->exam_pass_group_list[$i],$default_group_list)) continue;
@@ -275,7 +279,7 @@ class examController extends exam
 		{
 			$total_point = 0;
 			$question_list = $oExamModel->getQuestionList($document_srl);
-			if(count($question_list))
+			if(!empty($question_list) && is_array($question_list))
 			{
 				foreach($question_list->data as $key => $val)
 				{
@@ -611,7 +615,7 @@ class examController extends exam
 			if($this->module_info->exam_pass_group_option && $examitem->get('passGroupList'))
 			{
 				$new_group_list = $examitem->get('passGroupList');
-				if(count($new_group_list) > 0)
+				if(!empty($new_group_list) && is_array($new_group_list))
 				{
 					$new_args = new StdClass();
 					$new_args->member_srl = $logged_info->member_srl;
@@ -685,7 +689,7 @@ class examController extends exam
 		if($obj->category_srl)
 		{
 			$category_list = $oDocumentModel->getCategoryList($obj->module_srl);
-			if(count($category_list) > 0 && !$category_list[$obj->category_srl]->grant)
+			if(!empty($category_list) && is_array($category_list) && !$category_list[$obj->category_srl]->grant)
 			{
 				return $this->makeObject(-1, 'msg_not_permitted');
 			}

@@ -53,7 +53,7 @@ class questionItem extends BaseObject
 		$this->question_srl = $attribute->question_srl;
 		$this->adds($attribute);
 
-		if(count($attribute))
+		if(!empty((array)$attribute))
 		{
 			foreach($attribute as $key => $val)
 			{
