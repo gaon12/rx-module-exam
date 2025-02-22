@@ -610,7 +610,15 @@ class examItem extends BaseObject
 
 	function getAllQuestionPoint()
 	{
-		return $this->get('total_point');
+		$questions = $this->getQuestions();
+		$total = 0;
+		if (is_array($questions)) {
+			foreach ($questions as $question) {
+				// 각 문제의 'point' 필드 값을 정수로 형변환하여 누적 합산
+				$total += (int)$question->get('point');
+			}
+		}
+		return $total;
 	}
 }
 /* End of file exam.item.php */
